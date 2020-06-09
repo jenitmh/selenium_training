@@ -60,7 +60,8 @@
     </Reference>
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="MyFirstTest.cs" />
+    <Compile Include="MenuItems.cs" />
+    <Compile Include="ProductSticker.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>
   <ItemGroup>
