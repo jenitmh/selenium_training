@@ -1,7 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
 using NUnit.Framework;
-using NUnit.Framework.Interfaces;
 using OpenQA.Selenium;
 using OpenQA.Selenium.Chrome;
 using OpenQA.Selenium.IE;
@@ -30,7 +29,6 @@ namespace SeleniumTraining
         {
             driver.Url = baseUrl;
             StickerChecker();
-
         }
 
         /// <summary>
@@ -40,21 +38,24 @@ namespace SeleniumTraining
         {
             // Переменная списка со всеми карточками товара найденными на странице
             var productList = driver.FindElements(By.CssSelector("article.product-column"));
+
+            Assert.True(productList.Count > 0, "Нет товаров на странице");
+
             int productIndex = 0;
 
             // Перебор всех карточек товара
             for (int i = 0; i < productList.Count; i++)
             {
                 // Переменная со списком всех стикеров товара
-                var Sticker = productList[i].FindElements(By.CssSelector("div.sticker"));
+                var productSticker = productList[i].FindElements(By.CssSelector("div.sticker"));
 
                 // Проверка всех товаров на наличие единственного стикера
-                if (Sticker.Count == 1)
+                if (productSticker.Count == 1)
                 {
                     productIndex++;
                 }
             }
-            Assert.True(productList.Count > 0, "Нет товаров на странице");
+
             Assert.True(productIndex == productList.Count, "У " + (productList.Count - productIndex) + " из " + productList.Count + " товаров нет стикера");
         }
 

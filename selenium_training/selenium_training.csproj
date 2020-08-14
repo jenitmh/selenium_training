@@ -60,6 +60,7 @@
     </Reference>
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="AddProductsToCartTests.cs" />
     <Compile Include="MenuItems.cs" />
     <Compile Include="ProductSticker.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />

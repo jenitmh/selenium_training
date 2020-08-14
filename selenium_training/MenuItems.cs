@@ -1,6 +1,5 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.Drawing;
 using NUnit.Framework;
 using OpenQA.Selenium;
 using OpenQA.Selenium.Chrome;
@@ -63,7 +62,7 @@ namespace SeleniumTraining
                     // Перебор всех пунктов подменю
                     for (int s = 1; s <= quantitySub; s++)
                     {
-                        // Клик по пункту меню
+                        // Клик по пункту подменю
                         driver.FindElement(By.CssSelector(".doc:nth-child(" + s + ")")).Click();
                         HeaderAvailable();
                     }
@@ -77,7 +76,7 @@ namespace SeleniumTraining
         /// </summary>
         private void HeaderAvailable()
         {
-            Assert.True(IsElementPresent(By.CssSelector("div.panel-heading")), "У пункта меню нет заголовка"); // Проверка пункта меню на наличие заголовка
+            Assert.True(IsElementPresent(By.CssSelector("div.panel-heading")), "У пункта меню нет заголовка");
         }
 
         private bool IsElementPresent(By by)
