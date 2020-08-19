@@ -25,25 +25,45 @@ namespace SeleniumTraining
         }
 
         [Test]
+        [Obsolete]
         public void AddProductsToCartTest()
         {
-            AddProductsToCart(3);
-            GoToCart();
-            RemoveProducts();
+            // Переменная с количеством товаров
+            int quantityProducts = 3;
+
+            AddProductsToCart(quantityProducts);
+            RemoveProductFromCart(quantityProducts);
         }
 
         /// <summary>
         /// Добавляет указанное количество товаров в корзину.
         /// </summary>
-        /// <param name="quantity"></param>
-        private void AddProductsToCart(int quantity)
+        /// <param name="quantityProducts"></param>
+        [Obsolete]
+        private void AddProductsToCart(int quantityProducts)
         {
-            for (int i = 0; i < quantity; i++)
+            for (int i = 0; i < quantityProducts; i++)
             {
                 OpenHomePage();
-                OpenProductPage(0);
+                OpenProductPage(i);
                 SelectSize("Small");
-                AddToCart();
+                ClickAddToCartButton();
+                WaitingProductAdd(i + 1);
+            }
+        }
+
+        /// <summary>
+        /// Удаляет указанное количество товаров из корзины.
+        /// </summary>
+        [Obsolete]
+        private void RemoveProductFromCart(int quantityProducts)
+        {
+            GoToCart();
+
+            for (int i = 0; i < quantityProducts; i++)
+            {
+                ClickRemoveButton();
+                WaitingProductRemove();
             }
         }
 
@@ -56,55 +76,16 @@ namespace SeleniumTraining
         }
 
         /// <summary>
-        /// Удаляет последовательно все товары из корзины.
+        /// Открывает страницу товара с указанным порядковым номером на странице.
         /// </summary>
-        private void RemoveProducts()
+        /// <param name="index"></param>
+        private void OpenProductPage(int index)
         {
-            // Условие, что текущая страница является страницей корзины
-            if (IsElementPresent(By.ClassName("box")) && driver.Url == "http://localhost/litecart/checkout")
-            {
-                // Переменная с количеством товаров в корзине
-                int quantityProducts = driver.FindElements(By.ClassName("item")).Count;
-
-                // Перебор товаров в корзине
-                for (int i = 0; i < quantityProducts; i++)
-                {
-                    // Удаление товара из корзины
-                    driver.FindElement(By.Name("remove_cart_item")).Click();
-                    IsElementPresent(By.Id("box - checkout - summary"));
-                }
-            }
+            driver.FindElements(By.CssSelector("article.product-column"))[index].Click();
         }
 
         /// <summary>
-        /// Переходит в корзину.
-        /// </summary>
-        private void GoToCart()
-        {
-            driver.FindElement(By.Id("cart")).Click();
-        }
-
-        /// <summary>
-        /// Добавляет продукт в корзину.
-        /// </summary>
-        [Obsolete]
-        private void AddToCart()
-        {
-            // Переменная с элементом значка количества товаров в корзине
-            IWebElement bage = driver.FindElement(By.ClassName("badge"));
-            // Переменная с количеством товаров в корзине, отображаемом на значке bage
-            int text = int.Parse(driver.FindElement(By.ClassName("badge")).Text);
-
-            // Добавление товара в корзину
-            driver.FindElement(By.Name("add_cart_product")).Click();
-            // Добавление в переменную к количеству товаров в корзине + 1
-            text += 1;
-            // Ожидание появления количества товара на значке bage + 1
-            wait.Until(ExpectedConditions.TextToBePresentInElement(bage, text.ToString()));
-        }
-
-        /// <summary>
-        /// Выбирает размер продукта из выпадающего списка если у продукта есть такой параметр, если параметра нет - ничего не делает (аргументы: 's' - Small, 'm' - Medium, 'l' - Large).
+        /// Выбирает размер товара из выпадающего списка если у продукта есть такой параметр, если параметра нет - ничего не делает.
         /// </summary>
         /// <param name="size"></param>
         private void SelectSize(string size)
@@ -117,12 +98,55 @@ namespace SeleniumTraining
         }
 
         /// <summary>
-        /// Открывает страницу продукта.
+        /// Нажимает на кнопку добавления товара в корзину на странице товара.
         /// </summary>
-        /// <param name="index"></param>
-        private void OpenProductPage(int index)
+        private void ClickAddToCartButton()
         {
-            driver.FindElements(By.CssSelector("article.product-column"))[index].Click();
+            driver.FindElement(By.Name("add_cart_product")).Click();
+        }
+
+        /// <summary>
+        /// Ждет обновления значка счетчика добавленного в корзину товара.
+        /// </summary>
+        [Obsolete]
+        private void WaitingProductAdd(int quantityProducts)
+        {
+            // Переменная с элементом счетчика добавленного в корзину товара
+            IWebElement productBage = driver.FindElement(By.ClassName("badge"));
+            // Ожидание обновления productBage
+            wait.Until(ExpectedConditions.TextToBePresentInElement(productBage, quantityProducts.ToString()));
+        }
+
+        /// <summary>
+        /// Переходит в корзину.
+        /// </summary>
+        [Obsolete]
+        private void GoToCart()
+        {
+            // Переход в корзину
+            driver.FindElement(By.Id("cart")).Click();
+            // Ожидание появления содержимого корзины
+            wait.Until(ExpectedConditions.ElementIsVisible(By.ClassName("data-table")));
+        }
+
+        /// <summary>
+        /// Нажимает на кнопку удаления товара из корзины.
+        /// </summary>
+        private void ClickRemoveButton()
+        {
+            driver.FindElement(By.Name("remove_cart_item")).Click();
+        }
+
+        /// <summary>
+        /// Ждет обновления списка товаров.
+        /// </summary>
+        [Obsolete]
+        private void WaitingProductRemove()
+        {
+            // Переменная с элементом прелоадером
+            IWebElement loader = driver.FindElement(By.ClassName("loader"));
+            // Ожидание исчезновения loader
+            wait.Until(ExpectedConditions.StalenessOf(loader));
         }
 
         private bool IsElementPresent(By by)

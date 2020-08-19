@@ -12,7 +12,7 @@ namespace SeleniumTraining
     public class MenuItems
     {
         private IWebDriver driver;
-        private WebDriverWait wait;
+        //private WebDriverWait wait;
         private string baseUrl;
 
         [SetUp]
@@ -20,8 +20,8 @@ namespace SeleniumTraining
         {
             driver = new ChromeDriver();
             baseUrl = "http://localhost/litecart/";
-            driver.Manage().Timeouts().ImplicitWait = TimeSpan.FromSeconds(2);
-            wait = new WebDriverWait(driver, TimeSpan.FromSeconds(2));
+            driver.Manage().Timeouts().ImplicitWait = TimeSpan.FromSeconds(5);
+            //wait = new WebDriverWait(driver, TimeSpan.FromSeconds(2));
         }
 
         [Test]
